@@ -1,14 +1,15 @@
 const request = require('request');
 const { JSDOM } = require('jsdom');
+const axios = require('axios').default;
 
 
-module.exports = (exampleBlogArticle) => {
-    console.log(exampleBlogArticle);
+module.exports = (blogArticlePath) => {
+    console.log(blogArticlePath);
     let TC = [];
     let TM = [];
     let maxTC, maxTM;
     return new Promise((resolve, reject) => {
-        request(exampleBlogArticle, async function (err, res, body) {
+        request(blogArticlePath,async function (err, res, body) {
             const jD = new JSDOM(body).window.document;
             const classes = jD.querySelectorAll('div');
             classes.forEach((elem, index) => {
@@ -20,8 +21,6 @@ module.exports = (exampleBlogArticle) => {
                     if (elem.getAttribute('class').includes('meta'))
                         TM.push({ name: elem.getAttribute('class'), length: elem.children.length });
                 }
-
-
             })
 
             maxTC = TC.reduce(function (prev, current) {
